@@ -1,0 +1,166 @@
+<app-menu-bar></app-menu-bar>
+<main>
+  <div id="section-home" class="position-relative overflow-hidden text-center bg-body-tertiary mb-5">
+    <div class="col-md-6 p-lg-5 mx-auto my-5">
+      <h1 class="display-3 fw-bold">Bienvenido</h1>
+      <h3 class="fw-normal text-muted mb-3">La elegancia del vestir a un click de distancia</h3>
+    </div>
+    <div class="product-device shadow-sm d-none d-md-block"></div>
+    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+  </div>
+
+  <div id="section-product" class="d-md-flex flex-md-equal w-100">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h3 class="display-6 fw-bold">Productos</h3>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <p class="col">
+          Encuentra la prenda ideal para ti. Escoge entre cientos de prendas, tamaños y colores.
+        </p>
+      </div>
+      <div class="row row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-cols-1 g-3">
+        <div class="col" *ngFor="let product of productList; index as i;">
+          <div class="card shadow-sm p-0 mx-auto h-100 product-item">
+            <img [src]="'../../../assets/img/products/product_00' + product.idProducto + '.jpg'" class="card-img-top">
+            <div class="card-body pt-1 d-flex flex-column">
+              <p class="card-text mt-0">{{ product.nombre }}</p>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-success">S/ {{ product.precio }}</button>
+                  <button type="button" class="btn btn-sm btn-outline-primary" (click)="viewAddCart(product)">Lo quiero</button>
+                </div>
+                <!-- <small class="text-body-secondary">Tallas</small> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-ours" class="mt-5 px-5 py-4 bg-body-tertiary">
+    <h3 class="display-6 fw-bold">¿Quienes somos?</h3>
+    <div class="row row-cols-1 row-cols-md-2 g-5 py-5">
+      <div class="col d-flex flex-column align-items-start gap-2">
+        <h2 class="fw-bold text-body-emphasis">Tu mejor opción en prendas de vestir de alta calidad</h2>
+        <p class="text-body-secondary">Somos una empresa dedicada a la venta de prendas de vestir de alta calidad y una gran variedad. Contamos con tiendas en toda la región y realizamos entregas a domicilio.</p>
+      </div>
+      <div class="col">
+        <div class="row row-cols-md-2 row-cols-sm-2 row-cols-2 g-4">
+          <div class="col d-flex flex-column gap-2">
+            <div class=" text-bg-primary bg-gradient fs-4 rounded-3 ms-0 me-auto px-4">
+              <i class="bi bi-patch-check-fill"></i>
+            </div>
+            <h4 class="fw-semibold mb-0 text-body-emphasis">Calidad</h4>
+            <p class="text-body-secondary">Cada prenda de vestir ha sido elaborada empleando altos estándares en confección y acabado.</p>
+          </div>
+
+          <div class="col d-flex flex-column gap-2">
+            <div class=" text-bg-primary bg-gradient fs-4 rounded-3 ms-0 me-auto px-4">
+              <i class="bi bi-columns-gap"></i>
+            </div>
+            <h4 class="fw-semibold mb-0 text-body-emphasis">Variedad</h4>
+            <p class="text-body-secondary">Tenemos gran variedad de prendas de vestir en todas las tallas, para damas, caballeros y niños.</p>
+          </div>
+
+          <div class="col d-flex flex-column gap-2">
+            <div class=" text-bg-primary bg-gradient fs-4 rounded-3 ms-0 me-auto px-4">
+              <i class="bi bi-bookmark-check-fill"></i>
+            </div>
+            <h4 class="fw-semibold mb-0 text-body-emphasis">Garantía</h4>
+            <p class="text-body-secondary">Nuestra garantia es entregar a nuestros clientes lo mejor en prendas de vestir y calidad.</p>
+          </div>
+
+          <div class="col d-flex flex-column gap-2">
+            <div class=" text-bg-primary bg-gradient fs-4 rounded-3 ms-0 me-auto px-4">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <h4 class="fw-semibold mb-0 text-body-emphasis">Atención personalizada</h4>
+            <p class="text-body-secondary">Te ayudamos a elegir y despejamos dudas en cada paso de tu elección hacia un nuevo look.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="modal   de" id="viewProductModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <button id="viewProductModalBtn" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#viewProductModal"></button>
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 col-sm-12 d-flex flex-column">
+            <button id="closeViewProductModalBtn" type="button" class="btn-close ms-auto d-md-none d-block" data-bs-dismiss="modal" aria-label="Close"></button>
+            <img class="w-100" [src]="'../../../assets/img/products/product_00' + temporalProduct.idProducto + '.jpg'">
+          </div>
+          <div class="col-md-6 col-sm-12 d-flex flex-column">
+            <button type="button" class="btn-close ms-auto d-md-block d-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="h5 mt-md-2 mt-sm-4">{{ temporalProduct.nombre }}</div>
+            <div class="mt-auto mb-3 w-100 d-flex flex-row">
+              <span class="text-white bg-success px-2 align-content-center">S/ {{ temporalProduct.precio }}</span>
+              <span class="text-white ms-2 d-flex">
+                <button type="button" class="btn btn-sm btn-secondary" (click)="changeNumber('remove')"><i class="bi bi-caret-left-fill"></i></button>
+                <span class="text-dark mx-1 px-2 align-content-center border border-dark-subtle">{{ temporalProduct.number }}</span>
+                <button type="button" class="btn btn-sm btn-secondary" (click)="changeNumber('add')"><i class="bi bi-caret-right-fill"></i></button>
+              </span>
+              <!-- <span class="text-white bg-success px-2 align-content-center">S/ {{ temporalProduct.price }}</span> -->
+            </div>
+            <div class="mb-0">
+              <button type="button" class="btn btn-primary" (click)="addCart()"><i class="bi bi-cart-check"></i> Añadir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="appCartProducts" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <button id="appCartBtn" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#appCartProducts"></button>
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row d-flex flex-row pb-2 mb-3 pe-3 border-bottom">
+          <span class="w-auto">Carrito de compras</span>
+          <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="row">
+          <div class="col">
+            <table class="table table-sm table-hover table-responsive">
+              <thead>
+                <tr>
+                  <th scope="col">Nro</th>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Precio Unitario</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Total </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr  *ngFor="let item of appCart; index as n;">
+                  <th scope="row">{{ n + 1 }}</th>
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.precio }}</td>
+                  <td>{{ item.number }}</td>
+                  <td>{{ item.parcial }}</td>
+                </tr>
+                <tr>
+                  <td colspan="4" class="text-end">Total: </td>
+                  <td>S/ {{ totalCart }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-success"><i class="bi bi-check"></i>Compar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

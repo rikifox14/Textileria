@@ -1,0 +1,178 @@
+<div class="container w-100">
+    <div class="row mt-3">
+      <span class="h4">Gestion de Venta</span>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-sm btn-success float-end" (click)="openModalItem('Crear', {})"><i class="bi bi-plus"></i> Nuevo</button>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col">
+        <table class="table table-bordered table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">IDCliente</th>
+              <th scope="col">FechaVenta</th>           
+              <th scope="col">IGV</th>
+              <th scope="col">SubTotal</th>
+              <th scope="col">CostoVenta</th>
+              <th scope="col">IDTipoComprobante</th>
+              <th scope="col">IDMetodoPago</th>
+              <th scope="col">MontoAcuenta</th>
+              <th scope="col">IDUsuarioAcceso</th>
+              <th scope="col">NroComprobante</th>
+              <th scope="col">Saldo</th>
+              <th scope="col">IDSucursal</th>
+              <th scope="col">Editar</th>
+              <th scope="col">Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ventaLista; index as n;">
+              <th scope="row">{{ n + 1 }}</th>
+              <td>{{ item.idCliente}}</td>
+              <td>{{ item.fechaVenta}}</td>
+              <td>{{ item.igv}}</td>
+              <td>{{ item.subtotal }}</td>
+              <td>{{ item.costoVenta }}</td>
+              <td>{{ item.idTipoComprobante }}</td>
+              <td>{{ item.idMetodopago }}</td>
+              <td>{{ item.montoAcuenta }}</td>
+              <td>{{ item.idUsuarioAcceso }}</td>
+              <td>{{ item.nroComprobante }}</td>
+              <td>{{ item.saldo }}</td>
+              <td>{{ item.idSucursal }}</td>
+
+              <td><button type="button" class="btn btn-sm btn-primary" (click)="openModalItem('Editar', item)"><i class="bi bi-pencil"></i></button></td>
+              <td><button type="button" class="btn btn-sm btn-danger" (click)="openModalDelete(item)"><i class="bi bi-trash"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" [id]="idModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <button [id]="idModal+ '-btn'" type="button" data-bs-toggle="modal" [attr.data-bs-target]="'#' + idModal" class="d-none"></button>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">{{ stateModal }} Venta</h1>
+          <button [id]="idModal + '-btn-close'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form [formGroup]="ventaForm" (ngSubmit)="formAction()">
+          <div class="modal-body">
+            <div class="row g-3">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="form-label fw-bolder">IDCliente:</label>
+                    <select formControlName="idCliente" class="form-select" aria-label="select">
+                      <option value="" disabled selected>Seleccionar...</option>
+                      <option *ngFor="let Clientes of clientesLista; index as t;" [value]="Clientes.idCliente">{{ Clientes.idCliente}}</option>
+                    </select>
+                  </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">FechaVenta:</label>
+                <input formControlName="fechaVenta" type="datetime-local" class="form-control">
+              </div>
+              
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">IGV:</label>
+                <input formControlName="igv" type="text" (keydown)="validatorTemplate.onlyNumbers($event)" class="form-control">
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">Subtotal:</label>
+                <input formControlName="subtotal" type="text"(keydown)="validatorTemplate.onlyNumbers($event)" class="form-control">
+              </div>
+                           
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">IDTipoComprobante:</label>
+                <select formControlName="idTipoComprobante" class="form-select" aria-label="select">
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option *ngFor="let TipoComprobante of tipoComprobanteLista; index as t;" [value]="TipoComprobante.idTipoComprobante">{{ TipoComprobante.nombreTipoComprobante }}</option>
+                </select>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">IDMetodoPago:</label>
+                <select formControlName="idMetodoPago" class="form-select" aria-label="select">
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option *ngFor="let MetodoPago of metodoPagoLista; index as t;" [value]="MetodoPago.idMetodopago">{{ MetodoPago.nombreMetodoPago }}</option>
+                </select>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">MontoAcuenta:</label>
+                <input formControlName="montoAcuenta" type="text" (keydown)="validatorTemplate.onlyNumbers($event)" class="form-control">
+              </div>
+                
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">IDUsuarioAcceso:</label>
+                <select formControlName="idUsuarioAcceso" class="form-select" aria-label="select">
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option *ngFor="let UsuarioAcceso of usuarioAccesoLista; index as t;" [value]="UsuarioAcceso.idUsuarioAcceso">{{ UsuarioAcceso.usuario }}</option>
+                </select>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">NroComprobante:</label>
+                <input formControlName="nroComprobante" type="text" (keydown)="validatorTemplate.onlyNumbers($event)" class="form-control">
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">Saldo:</label>
+                <input formControlName="saldo" type="text"(keydown)="validatorTemplate.onlyNumbers($event)" class="form-control">
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">IDSucursal:</label>
+                <select formControlName="idSucursal" class="form-select" aria-label="select">
+                  <option value="" disabled selected>Seleccionar...</option>
+                  <option *ngFor="let Sucursal of sucursalLista; index as t;" [value]="Sucursal.idSucursal">{{ Sucursal.distrito }}</option>
+                </select>
+              </div>
+
+            </div>
+            <div class="row mt-3">
+              <div class="col">
+                <div *ngIf="errorMessage !== ''" class="alert alert-danger alert-dismissible mb-0" role="alert">
+                  <div class="me-auto">{{errorMessage}}</div>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="errorMessage = ''"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button *ngIf="stateModal === 'Editar'; else elseBtnModal" type="submit" class="btn btn-primary">Actualizar</button>
+            <ng-template #elseBtnModal>
+              <button type="submit" class="btn btn-success">Registrar</button>
+            </ng-template>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div [id]="idModal + '-delete'" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <button [id]="idModal + '-delete-btn'" type="button" data-bs-toggle="modal" [attr.data-bs-target]="'#' + idModal + '-delete'" class="d-none"></button>
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Eliminar</h1>
+          <button [id]="idModal + '-delete-btn-close'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Confirmar eliminacion de:
+          <br>
+          <span class="fw-bolder">{{ventaToDelete.idCliente }}</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" (click)="eliminarItem()">Elimnar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+

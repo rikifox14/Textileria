@@ -1,0 +1,141 @@
+<div class="container w-100">
+    <div class="row mt-3">
+      <span class="h4">Gestion de Kardex</span>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-sm btn-success float-end" (click)="openModalItem('Crear', {})"><i class="bi bi-plus"></i> Nuevo</button>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col">
+        <table class="table table-bordered table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">IDProducto</th>
+              <th scope="col">IDSucursal</th>           
+              <th scope="col">CantidadIngreso</th>
+              <th scope="col">CantidadSalida</th>
+              <th scope="col">Stock</th>
+              <th scope="col">UltimoPrecioCosto</th>
+              <th scope="col">UltimoPrecioVenta</th>
+              <th scope="col">UltimoPrecioUtil</th>
+              <th scope="col">Editar</th>
+              <th scope="col">Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of kardexLista; index as n;">
+              <th scope="row">{{ n + 1 }}</th>
+              <td>{{ item.idProducto}}</td>
+              <td>{{ item.idSucursal }}</td>
+              <td>{{ item.cantidadIngreso}}</td>
+              <td>{{ item.cantidadSalida }}</td>
+              <td>{{ item.stock}}</td>
+              <td>{{ item.ultimoPrecioCosto}}</td>
+              <td>{{ item.ultimoPrecioVenta}}</td>
+              <td>{{ item.ultimoPrecioUtil}}</td>
+
+              <td><button type="button" class="btn btn-sm btn-primary" (click)="openModalItem('Editar', item)"><i class="bi bi-pencil"></i></button></td>
+              <td><button type="button" class="btn btn-sm btn-danger" (click)="openModalDelete(item)"><i class="bi bi-trash"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" [id]="idModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <button [id]="idModal+ '-btn'" type="button" data-bs-toggle="modal" [attr.data-bs-target]="'#' + idModal" class="d-none"></button>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">{{ stateModal }} Kardex</h1>
+          <button [id]="idModal + '-btn-close'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form [formGroup]="kardexForm" (ngSubmit)="formAction()">
+          <div class="modal-body">
+            <div class="row g-3">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="form-label fw-bolder">Producto:</label>
+                    <select formControlName="idProducto" class="form-select" aria-label="select">
+                      <option value="" disabled selected>Seleccionar...</option>
+                      <option *ngFor="let Producto of productoLista; index as t;" [value]="Producto.idProducto">{{ Producto.nombre}}</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="form-label fw-bolder">Sucursal:</label>
+                    <select formControlName="idSucursal" class="form-select" aria-label="select">
+                      <option value="" disabled selected>Seleccionar...</option>
+                      <option *ngFor="let Sucursal of sucursalLista; index as t;" [value]="Sucursal.idSucursal">{{ Sucursal.distrito }}</option>
+                    </select>
+                  </div>  
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">CantidadIngreso:</label>
+                <input formControlName="cantidadIngreso" type="text" class="form-control">
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">CantidadSalida:</label>
+                <input formControlName="cantidadSalida" type="text" class="form-control">
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">Stock:</label>
+                <input formControlName="stock" type="text" class="form-control">
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">UltimoPrecioCosto:</label>
+                <input formControlName="ultimoPrecioCosto" type="text" class="form-control">
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">UltimoPrecioVenta:</label>
+                <input formControlName="ultimoPrecioVenta" type="text" class="form-control">
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="form-label fw-bolder">UltimoPrecioUtil:</label>
+                <input formControlName="ultimoPrecioUtil" type="text" class="form-control">
+              </div>
+             
+            </div>
+            <div class="row mt-3">
+              <div class="col">
+                <div *ngIf="errorMessage !== ''" class="alert alert-danger alert-dismissible mb-0" role="alert">
+                  <div class="me-auto">{{errorMessage}}</div>
+                  <button type="button" class="btn-close" aria-label="Close" (click)="errorMessage = ''"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button *ngIf="stateModal === 'Editar'; else elseBtnModal" type="submit" class="btn btn-primary">Actualizar</button>
+            <ng-template #elseBtnModal>
+              <button type="submit" class="btn btn-success">Registrar</button>
+            </ng-template>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <div [id]="idModal + '-delete'" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <button [id]="idModal + '-delete-btn'" type="button" data-bs-toggle="modal" [attr.data-bs-target]="'#' + idModal + '-delete'" class="d-none"></button>
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Eliminar</h1>
+          <button [id]="idModal + '-delete-btn-close'" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Confirmar eliminacion de:
+          <br>
+          <span class="fw-bolder">{{kardexToDelete.IdKardex}}</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" (click)="eliminarItem()">Elimnar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+

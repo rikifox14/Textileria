@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-md bg-dark sticky-top border-bottom" data-bs-theme="dark">
+  <div class="container">
+    <div class="navbar-brand w-100 d-md-none d-flex justify-content-between">
+      <img src="../../../../assets/img/logo.png" alt="Oscar Fashion" class="ms-0" height="35">
+      <span class="mx-auto">Oscar Fashion</span>
+      <button type="button" class="nav-link cart px-2 me-4" (click)="openCart()">
+        <i class="bi bi-cart"></i>
+        <!-- <span class="my-auto ms-1">9</span> -->
+      </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+      <div class="offcanvas-header">
+        <img src="../../../../assets/img/logo.png" class="me-4" alt="Oscar Fashion" height="35">
+        <h5 class="offcanvas-title" id="offcanvasLabel">Oscar Fashion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="d-md-block d-none" id="image-company-navbar">
+          <img src="../../../../assets/img/logo.png" class="me-4" alt="Oscar Fashion" height="35">
+        </div>
+        <ul class="navbar-nav flex-grow-1 justify-content-between">
+          <li class="nav-item button-nav" *ngFor="let menu of menuHome; index as i;">
+            <button type="button" class="nav-link px-3" (click)="changeMenu(menu.section)">{{ menu.name }}</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="nav-link cart px-2 d-md-block d-none" (click)="openCart()">
+              <i class="bi bi-cart"></i>
+              <!-- <span class="my-auto ms-1">9</span> -->
+            </button>
+          </li>
+          <li class="nav-item mt-md-0 mt-3 me-0">
+            <button type="button" class="btn btn-primary" (click)="goToLogin()">
+              Administrar
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

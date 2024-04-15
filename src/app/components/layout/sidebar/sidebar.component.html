@@ -1,0 +1,34 @@
+<div class="d-flex flex-nowrap min-vh-100">
+  <div id="app-sidebar" class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+    <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto">
+      <i class="bi bi-bootstrap-fill fs-1 me-3"></i>
+      <span class="fs-4">Empresa</span>
+    </div>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto list-unstyled ps-0">
+      <li class="nav-item" *ngFor="let menu of dashboardMenu; index as m;">
+        <button *ngIf="menu.submenu === null; else elseMenu" [class]="'w-100 text-start btn btn-' + (activeMenu === menu.id ? 'primary' : 'light')" (click)="changeMenuDashboard(menu.id, menu.path)">
+          <i [class]="'bi bi-' + menu.icon + ' me-2'"></i>
+          {{ menu.name }}
+        </button>
+        <ng-template #elseMenu>
+          <button class="w-100 text-start btn btn-light" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-menu-' + menu.id">
+            <i [class]="'bi bi-' + menu.icon + ' me-2'"></i>
+            {{ menu.name }}
+            <i class="bi bi-chevron-down me-2 float-end"></i>
+          </button>
+          <div [id]="'collapse-menu-' + menu.id" class="collapse navbar-collapse ps-3">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item" *ngFor="let subMenu of menu.submenu; index as sm;">
+                <button [class]="'w-100 text-start btn btn-' + (activeMenu === subMenu.id ? 'primary' : 'light')" (click)="changeMenuDashboard(subMenu.id, subMenu.path)">
+                  <i [class]="'bi bi-' + subMenu.icon + ' me-2'"></i>
+                  {{ subMenu.name }}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+</div>

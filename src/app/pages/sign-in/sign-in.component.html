@@ -1,0 +1,56 @@
+<main class="d-flex min-vh-100 min-vw-100">
+	<form
+		class="login-form m-auto shadow"
+		[formGroup]="loginForm"
+		(ngSubmit)="loginSubmit()"
+	>
+		<h2 class="text-center">Bienvenido</h2>
+		<hr class="mt-3 mb-4" />
+		<div class="input-group mb-3">
+			<label for="login-form-user" class="input-group-text">
+				<i class="fs-5 bi bi-person-circle"></i>
+			</label>
+			<input
+				formControlName="username"
+				type="text"
+				class="form-control"
+				id="login-form-user"
+				placeholder="Usuario"
+				autocomplete="username"
+			/>
+		</div>
+		<div class="input-group mb-3">
+			<label for="login-form-password" class="input-group-text">
+				<i class="fs-5 bi bi-key-fill"></i>
+			</label>
+			<input
+				formControlName="password"
+				[type]="!visible ? 'password' : 'text'"
+				class="form-control"
+				id="login-form-password"
+				placeholder="Contraseña"
+				autocomplete="current-password"
+			/>
+			<button
+				(click)="visible = !visible"
+				type="button"
+				class="input-group-text btn-eye"
+			>
+				<i [class]="'fs-5 bi bi-eye' + (!visible ? '-slash' : '')"></i>
+			</button>
+		</div>
+		<div class="d-grid mb-3">
+			<button
+				class="btn btn-primary fw-bold"
+				type="submit"
+			>
+				Iniciar sesión
+			</button>
+		</div>
+
+		<div *ngIf="errorMessage !== ''" class="alert alert-danger alert-dismissible" role="alert">
+			<div>{{errorMessage}}</div>
+			<button type="button" class="btn-close" aria-label="Close" (click)="errorMessage = ''"></button>
+		</div>
+	</form>
+</main>
