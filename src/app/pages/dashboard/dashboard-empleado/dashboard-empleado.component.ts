@@ -25,7 +25,7 @@ export class DashboardEmpleadoComponent implements OnInit{
         empleadoLista: Array<Empleado>,
         cargoLista: Array<Cargo>,
         estadoLista: Array<Estado>,
-        personaService: Array<Persona>,
+        personaLista: Array<Persona>,
       }
     }>,
   ){
@@ -182,7 +182,7 @@ export class DashboardEmpleadoComponent implements OnInit{
       this.estadoLista = data.estadoLista
     })
     this.store.select('dashboardState').subscribe( data => {
-      this.personaLista = data.personaService
+      this.personaLista = data.personaLista
     })
 
     //Lamando afunciones que cargan datos iniciales
